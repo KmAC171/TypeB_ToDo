@@ -1,10 +1,11 @@
 const Todo = require('../models/Todo.js');
 
-exports.getAllTodos = async (requestAnimationFrame, res) => {
+exports.getAllTodos = async (req, res) => {
     try{
         const todos = await Todo.find().sort({ createdAt: -1});
-        res.json(todods);
+        res.json(todos);
     } catch (error) {
+      console.error(error);
         res.status(500).json({
             message: 'Server Error',
         });
