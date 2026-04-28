@@ -32,5 +32,25 @@ export function useTodos() {
         setTodos(prev => prev.map(t => t._id === id ? data : t));
     };
 
-    
+    const toggle = async (id) => {
+        setTodos(prev => prev.map(t => t._id === id ? { ...t, done: !t.done } : t));
+        try{
+            const { data } = await api.toggleDone(id);
+            setTodos(prev => prev.map(t => t._id === id ? data : t));
+        } catch {
+            load();
+        }
+    };
+
+    const remove = async (id) => {
+        setTodos(prev => prev.filter(t => t._id !== id));
+        try{
+            await api.deleteTodo(id);
+
+        } catch{
+            load();
+        }
+    };
+
+    return { todos, loading, error, add, edit, toggle, remove };
 }
