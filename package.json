@@ -7,6 +7,12 @@
     "install:all": "npm install && npm install --prefix server && npm install --prefix client"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "autoprefixer": "^10.5.0",
+    "concurrently": "^8.2.2",
+    "postcss": "^8.5.12",
+    "tailwindcss": "^4.2.4"
+  },
+  "dependencies": {
+    "axios": "^1.15.2"
   }
 }

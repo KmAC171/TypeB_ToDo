@@ -23,3 +23,40 @@ exports.create = async (req, res) => {
     }
 };
 
+exports.update = async (req, res) => {
+  const { title, description } = req.body;
+  if (!title?.trim()) return res.status(400).json({ message: 'Title is required' });
+  try {
+    const todo = await Todo.findByIdAndUpdate(
+      req.params.id,
+      { title, description },
+      { new: true, runValidators: true }
+    );
+    if (!todo) return res.status(404).json({ message: 'Todo not found' });
+    res.json(todo);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.toggleDone = async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id);
+    if (!todo) return res.status(404).json({ message: 'Todo not found' });
+    todo.done = !todo.done;
+    await todo.save();
+    res.json(todo);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.remove = async (req, res) => {
+  try {
+    const todo = await Todo.findByIdAndDelete(req.params.id);
+    if (!todo) return res.status(404).json({ message: 'Todo not found' });
+    res.json({ message: 'Deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
